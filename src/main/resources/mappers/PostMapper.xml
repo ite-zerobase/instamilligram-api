@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.zerobase.instamilligramapi.domain.posts.PostMapper">
+    <insert id="insertPost" parameterType="PostIn" useGeneratedKeys="true" keyColumn="post_id" keyProperty="postId">
+        INSERT INTO posts
+        (
+             user_id,
+             caption,
+             place
+        )
+        VALUES (
+            #{userId},
+            #{caption},
+            #{place}
+        )
+        RETURNING post_id
+    </insert>
+    <select id="selectPost" parameterType="int" resultMap="PostOutMap">
+        SELECT
+            p.post_id,
+            p.user_id,
+            p.caption,
+            p.created_at,
+            p.updated_at,
+            p.likes_count,
+            p.comments_count,
+            p.place,
+            COALESCE(l.liked_at IS NOT NULL, false) as liked,
+            l.liked_at,
+            m.media_id,
+            m.media_url,
+            m.media_type
+        FROM posts p
+        LEFT JOIN post_likes l ON p.post_id = l.post_id and p.user_id = l.user_id
+        LEFT JOIN post_media m ON p.post_id = m.post_id
+        WHERE p.post_id = #{postId}
+    </select>
+
+    <select id="selectManyPost" parameterType="PostIn" resultMap="PostOutMap">
+        WITH SelectedPosts AS (
+            SELECT
+                p.post_id,
+                p.user_id,
+                p.caption,
+                p.created_at,
+                p.updated_at,
+                p.likes_count,
+                p.comments_count,
+                p.place,
+                COALESCE(l.liked_at IS NOT NULL, false) as liked,
+                l.liked_at
+            FROM posts p
+            LEFT JOIN post_likes l ON p.post_id = l.post_id and p.user_id = l.user_id
+            ORDER BY p.created_at
+            OFFSET (#{page}-1)*#{size} FETCH FIRST #{size} ROWS only
+        )
+        SELECT
+            p.*,
+            m.media_id,
+            m.media_url,
+            m.media_type
+        FROM SelectedPosts p
+        LEFT JOIN post_media m ON p.post_id = m.post_id
+        ORDER BY p.created_at
+    </select>
+
+    <resultMap id="PostOutMap" type="PostOut">
+        <id property="postId" column="post_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="caption" column="caption"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+        <result property="likesCount" column="likes_count"/>
+        <result property="commentsCount" column="comments_count"/>
+        <result property="place" column="place"/>
+        <result property="liked" column="liked"/>
+        <result property="likedAt" column="liked_at"/>
+        <collection property="mediaUrl" ofType="PostMedia" notNullColumn="media_id"
+                    resultMap="PostOutMediaMap"/>
+    </resultMap>
+
+    <resultMap id="PostOutMediaMap" type="PostMedia">
+        <result property="mediaUrl" column="media_url"/>
+        <result property="mediaType" column="media_type"/>
+    </resultMap>
+</mapper>

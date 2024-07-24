@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: instamilligram-api
+  profiles:
+    include:
+      - dev
+  datasource:
+    hikari:
+      maximum-pool-size: 4
+    url: ${db-url}
+    username: ${db-username}
+    password: ${db-password}
+    driver-class-name: org.postgresql.Driver
+  webflux:
+    cors:
+      allowed-origins: "*"
+mybatis:
+  type-aliases-package: com.zerobase
+  mapper-locations: classpath:mappers/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n"
+  level:
+    org:
+      hibernate:
+        SQL: info
+    jdbc:
+      sqlonly: info
+      sqltiming: info
+
+springdoc:
+  packages-to-scan: com.zerobase.instamilligram-api
+  default-consumes-media-type: application/json;charset=UTF-8
+  default-produces-media-type: application/json;charset=UTF-8
+  swagger-ui:
+    operations-sorter: alpha
+    tags-sorter: alpha
+    path: /
+    disable-swagger-default-url: true
