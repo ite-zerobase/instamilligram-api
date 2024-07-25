@@ -1,10 +1,101 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="com.zerobase.instamilligramapi.domain.posts.PostMapper">
-    <select id="selectManyComment" parameterType="CommentIn" resultType="CommentOut">
+<mapper namespace="com.zerobase.instamilligramapi.domain.comments.CommentMapper">
+    <select id="selectCommentByCommentId" parameterType="int" resultType="CommentOut">
+        SELECT /* selectCommentByCommentId */
+            c.comment_id,
+            c.post_id,
+            c.created_by,
+            c.comment_text,
+            c.parent_id,
+            c.like_count,
+            c.reply_count,
+            c.created_at,
+            c.updated_at
+        FROM comments c
+        WHERE c.comment_id = #{commentId}
     </select>
-    <insert id="insertComment" parameterType="int">
+
+    <insert id="insertComment" parameterType="CommentIn" useGeneratedKeys="true" keyColumn="comment_id" keyProperty="commentId">
+        INSERT INTO comments
+        (
+            post_id,
+            created_by,
+            comment_text,
+            parent_id
+        )
+        VALUES
+        (
+            #{postId},
+            #{username},
+            #{commentText},
+            #{parentId}
+        )
+        RETURNING comment_id
     </insert>
 
+    <select id="selectCommentsByCommentSearch" parameterType="CommentSearch" resultType="CommentOut">
+        SELECT
+            c.comment_id,
+            c.post_id,
+            c.created_by,
+            c.comment_text,
+            c.parent_id,
+            c.like_count,
+            c.reply_count,
+            c.created_at,
+            c.updated_at,
+            COALESCE(l.liked_at IS NOT NULL, false) as liked,
+            l.liked_at
+        FROM comments c
+        LEFT JOIN comment_likes l ON c.comment_id = l.comment_id AND l.username = #{currentUsername}
+        WHERE
+        <if test="commentId != null">
+            parent_id = #{commentId}
+        </if>
+        <if test="postId != null">
+            post_id = #{postId}
+            AND parent_id IS null
+        </if>
+        ORDER BY created_at
+    </select>
+
+    <insert id="insertCommentLike" parameterType="CommentMeta">
+        INSERT INTO comment_likes
+        (
+            comment_id,
+            username
+        )
+        VALUES
+        (
+            #{commentId},
+            #{username}
+        )
+    </insert>
+    <insert id="deleteCommentLike" parameterType="CommentMeta">
+        DELETE
+        FROM comment_likes
+        WHERE comment_id = #{commentId}
+        AND username = #{username}
+    </insert>
+
+    <update id="updateCommentLikeCount" parameterType="CommentMeta">
+        UPDATE comments
+        SET like_count = like_count + #{sign}, updated_at = now()
+        WHERE comment_id = #{commentId}
+    </update>
+
+    <update id="updateReplyCount" parameterType="CommentMeta">
+        UPDATE comments
+        SET reply_count = reply_count + #{sign}, updated_at = now()
+        WHERE comment_id = #{commentId}
+    </update>
+
+    <select id="selectCommentLike" parameterType="CommentMeta" resultType="CommentLike">
+        SELECT comment_id, username, liked_at
+        FROM comment_likes
+        WHERE comment_id = #{commentId}
+        AND username = #{username}
+    </select>
 </mapper>

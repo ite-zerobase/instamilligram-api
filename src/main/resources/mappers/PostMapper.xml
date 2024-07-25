@@ -5,26 +5,45 @@
     <insert id="insertPost" parameterType="PostIn" useGeneratedKeys="true" keyColumn="post_id" keyProperty="postId">
         INSERT INTO posts
         (
-             user_id,
+             created_by,
              caption,
              place
         )
         VALUES (
-            #{userId},
+            #{username},
             #{caption},
             #{place}
         )
         RETURNING post_id
     </insert>
-    <select id="selectPost" parameterType="int" resultMap="PostOutMap">
+
+    <insert id="insertPostMedia" parameterType="PostMediaIn">
+        INSERT INTO post_media
+        (
+            post_id,
+            media_url,
+            media_type
+        )
+        VALUES
+        (
+            #{postId},
+            #{Media},
+            #{MediaType}
+        )
+
+    </insert>
+
+    <select id="selectPost" parameterType="PostIn" resultMap="PostOutMap">
         SELECT
             p.post_id,
-            p.user_id,
+            p.created_by,
+            u.username,
+            u.profile_picture_url,
             p.caption,
             p.created_at,
             p.updated_at,
-            p.likes_count,
-            p.comments_count,
+            p.like_count,
+            p.comment_count,
             p.place,
             COALESCE(l.liked_at IS NOT NULL, false) as liked,
             l.liked_at,
@@ -32,26 +51,30 @@
             m.media_url,
             m.media_type
         FROM posts p
-        LEFT JOIN post_likes l ON p.post_id = l.post_id and p.user_id = l.user_id
+        JOIN users u ON p.created_by = u.username
+        LEFT JOIN post_likes l ON p.post_id = l.post_id and l.username = #{currentUsername}
         LEFT JOIN post_media m ON p.post_id = m.post_id
         WHERE p.post_id = #{postId}
     </select>
 
-    <select id="selectManyPost" parameterType="PostIn" resultMap="PostOutMap">
+    <select id="selectManyPost" parameterType="Paging" resultMap="PostOutMap">
         WITH SelectedPosts AS (
             SELECT
                 p.post_id,
-                p.user_id,
+                p.created_by,
+                u.username,
+                u.profile_picture_url,
                 p.caption,
                 p.created_at,
                 p.updated_at,
-                p.likes_count,
-                p.comments_count,
+                p.like_count,
+                p.comment_count,
                 p.place,
                 COALESCE(l.liked_at IS NOT NULL, false) as liked,
                 l.liked_at
             FROM posts p
-            LEFT JOIN post_likes l ON p.post_id = l.post_id and p.user_id = l.user_id
+            JOIN users u ON p.created_by = u.username
+            LEFT JOIN post_likes l ON p.post_id = l.post_id and l.username = #{currentUsername}
             ORDER BY p.created_at
             OFFSET (#{page}-1)*#{size} FETCH FIRST #{size} ROWS only
         )
@@ -67,21 +90,61 @@
 
     <resultMap id="PostOutMap" type="PostOut">
         <id property="postId" column="post_id"/>
-        <result property="userId" column="user_id"/>
         <result property="caption" column="caption"/>
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
-        <result property="likesCount" column="likes_count"/>
-        <result property="commentsCount" column="comments_count"/>
+        <result property="likeCount" column="like_count"/>
+        <result property="commentCount" column="comment_count"/>
         <result property="place" column="place"/>
         <result property="liked" column="liked"/>
         <result property="likedAt" column="liked_at"/>
-        <collection property="mediaUrl" ofType="PostMedia" notNullColumn="media_id"
+        <association property="writer" resultMap="PostWriter" javaType="UserOut" notNullColumn="username"/>
+        <collection property="media" ofType="PostMediaOut" notNullColumn="media_id"
                     resultMap="PostOutMediaMap"/>
     </resultMap>
 
-    <resultMap id="PostOutMediaMap" type="PostMedia">
+    <resultMap id="PostOutMediaMap" type="PostMediaOut">
         <result property="mediaUrl" column="media_url"/>
         <result property="mediaType" column="media_type"/>
     </resultMap>
+
+    <resultMap id="PostWriter" type="UserOut">
+        <id property="username" column="username"/>
+        <result property="profilePictureUrl" column="profile_picture_url"/>
+    </resultMap>
+    <insert id="insertPostLike" parameterType="PostMeta">
+        INSERT INTO post_likes
+        (
+            post_id,
+            username
+        )
+        VALUES
+        (
+            #{postId},
+            #{username}
+        )
+    </insert>
+    <insert id="deletePostLike" parameterType="PostMeta">
+        DELETE
+        FROM post_likes
+        WHERE post_id = #{postId}
+        AND username = #{username}
+    </insert>
+
+    <update id="updatePostLikeCount" parameterType="PostMeta">
+        UPDATE posts
+        SET like_count = like_count + #{sign}, updated_at = now()
+        WHERE post_id = #{postId}
+    </update>
+    <update id="updatePostCommentCount" parameterType="PostMeta">
+        UPDATE posts
+        SET comment_count = comment_count + #{sign}, updated_at = now()
+        WHERE post_id = #{postId}
+    </update>
+    <select id="selectPostLike" parameterType="PostMeta" resultType="PostLike">
+        SELECT post_id, username, liked_at
+        FROM post_likes
+        WHERE post_id = #{postId}
+        AND username = #{username}
+    </select>
 </mapper>

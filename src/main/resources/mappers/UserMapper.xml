@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.zerobase.instamilligramapi.domain.users.UserMapper">
+    <insert id="insertUser" parameterType="UserIn" useGeneratedKeys="true" keyColumn="user_id" keyProperty="userId">
+        INSERT INTO users
+        (
+            username,
+            email,
+            password_hash,
+            profile_picture_url,
+            bio
+        )
+        VALUES (
+            #{username},
+            #{email},
+            #{passwordHash},
+            #{profilePictureUrl},
+            #{bio}
+        )
+        RETURNING user_id
+    </insert>
+    <select id="selectUserByAuth" parameterType="AuthIn" resultType="UserOut">
+        SELECT
+            user_id,
+            username,
+            email,
+            password_hash,
+            profile_picture_url,
+            bio,
+            created_at,
+            updated_at
+        FROM users
+        WHERE username = #{username} AND password_hash = #{passwordHash}
+    </select>
+
+    <select id="selectUserByUsername" parameterType="UserSearch" resultType="UserOut">
+        SELECT
+            user_id,
+            username,
+            email,
+            password_hash,
+            profile_picture_url,
+            bio,
+            created_at,
+            updated_at
+        FROM users u
+        LEFT JOIN follows f ON u.username = f. /* TODO. 현재 유저가 대상 유저 팔로우 여부 selectOnePost 에서도 해야함*/
+        WHERE username = #{username}
+    </select>
+</mapper>

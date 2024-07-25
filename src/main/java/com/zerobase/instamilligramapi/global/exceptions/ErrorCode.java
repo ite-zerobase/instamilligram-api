@@ -8,14 +8,24 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum ErrorCode {
     /* 400 */
-    BAD_BODY_REQUEST(HttpStatus.BAD_REQUEST, "Wrong Body Format.", "C4001"), // C4001 <- C (Common) 400 (Status code)  1 (SEQ)
-    BAD_QUERY_REQUEST(HttpStatus.BAD_REQUEST, "Wrong Query Format.", "C4002"),
+    EMPTY_COMMENT_SEARCH_REQUEST(HttpStatus.BAD_REQUEST, "postId 또는 commentId는 필수값입니다.", "C4001"),
+    BAD_COMMENT_SEARCH_REQUEST(HttpStatus.BAD_REQUEST, "postId와 commentId를 동시에 명시할 수 없습니다.", "C4002"),
 
     /* 404 */
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 게시글이 없습니다.", "P4041"),
+    TARGET_POST_NOT_FOUND(HttpStatus.NOT_FOUND, "대상 게시글이 없습니다.", "P4042"),
+    POST_MEDIA_NOT_FOUND(HttpStatus.NOT_FOUND, "최소 1개 이상의 사진 또는 영상을 업로드해야 합니다.", "P4043"),
+
+    LIKE_NOT_FOUND(HttpStatus.NOT_FOUND, "삭제할 좋아요가 없습니다.", "L4041"),
+
+    COMMENT_NOT_FOUND(HttpStatus.CONFLICT, "해당 댓글이 없습니다.", "C4091"),
+    TARGET_COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "대상 댓글이 없습니다.", "C4042"),
+
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 유저입니다.", "U4041"),
 
     /* 409 */
-    PORTFOLIO_ASSET_DTL_CONFLICT(HttpStatus.CONFLICT, "PORTFOLIO_ASSET_DTL Conflicts.", "P4091")
+    POST_ALREADY_LIKED(HttpStatus.CONFLICT, "이미 좋아요 한 게시물입니다.", "P4091"),
+    COMMENT_ALREADY_LIKED(HttpStatus.CONFLICT, "이미 좋아요 한 댓글입니다.", "C4091"),
 
 
     ;

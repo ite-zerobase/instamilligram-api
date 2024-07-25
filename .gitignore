@@ -7,7 +7,7 @@ build/
 
 application-*.properties
 logs/
-
+*.log
 ### STS ###
 .apt_generated
 .classpath

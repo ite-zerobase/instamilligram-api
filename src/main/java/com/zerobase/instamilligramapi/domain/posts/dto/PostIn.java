@@ -1,19 +1,21 @@
 package com.zerobase.instamilligramapi.domain.posts.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.zerobase.instamilligramapi.global.dto.AuditDto;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
-public class PostIn extends AuditDto {
+public class PostIn{
     @JsonIgnore
     private Integer postId;
-    private Integer userId;
+    @NotNull(message = "username 필드는 null일 수 없습니다.")
+    private String username;
+    @NotNull(message = "caption 필드는 null일 수 없습니다.")
     private String caption;
     private String place;
-    private List<String> mediaUrl;
+    private List<PostMediaIn> media;
+    @JsonIgnore
+    private String currentUsername;
 }

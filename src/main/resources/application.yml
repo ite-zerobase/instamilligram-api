@@ -32,7 +32,7 @@ logging:
       sqltiming: info
 
 springdoc:
-  packages-to-scan: com.zerobase.instamilligram-api
+  packages-to-scan: com.zerobase.instamilligramapi
   default-consumes-media-type: application/json;charset=UTF-8
   default-produces-media-type: application/json;charset=UTF-8
   swagger-ui:

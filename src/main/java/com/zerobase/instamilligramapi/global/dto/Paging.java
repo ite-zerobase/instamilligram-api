@@ -1,32 +1,19 @@
 package com.zerobase.instamilligramapi.global.dto;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Getter
-@ToString
+@Data
 public class Paging {
+    @Min(value = 1, message = "page는 1보다 커야 합니다.")
     private int page = 1;
+    @Max(value = 10, message = "size는 10 이하여야 합니다.")
     private int size = 10;
-
-    private final static int DEFAULT_PAGE = 1;
-    private final static int MAX_SIZE = 10;
-
-    public Paging() {}
-
-    public Paging(int page, int size) {
-        this.setPage(page);
-        this.setSize(size);
-    }
-    public void setPage(int page) {
-        this.page = Math.max(DEFAULT_PAGE, page);
-    }
-
-    public void setSize(int size) {
-        this.size = Math.min(MAX_SIZE, size);
-        if (size == 0) {
-            this.size = MAX_SIZE;
-        }
-    }
+    @NotNull(message = "currentUsername은 null일 수 없습니다.")
+    private String currentUsername;
 }

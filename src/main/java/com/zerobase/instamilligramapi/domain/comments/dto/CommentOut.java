@@ -4,14 +4,18 @@ import com.zerobase.instamilligramapi.global.dto.AuditDto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.time.LocalDateTime;
+
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class CommentOut extends AuditDto {
-    private Integer comment_id;
-    private Integer post_id;
-    private Integer user_id;
-    private String comment_text;
-    private Integer parent_id;
-    private Integer like_count;
-    private Integer reply_count;
+    private Integer commentId;
+    private Integer postId;
+    private String createdBy;
+    private String commentText;
+    private Integer parentId;
+    private Integer likeCount;
+    private boolean liked;
+    private LocalDateTime likedAt;
+    private Integer replyCount;
 }
