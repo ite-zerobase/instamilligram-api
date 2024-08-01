@@ -15,7 +15,7 @@ public class UserService {
 
     public UserOut selectUserByUserSearch(UserSearch userSearch) {
         return userMapper.selectUserByUserSearch(userSearch)
-                .orElseThrow(ZbException.supplier(ErrorCode.USER_NOT_FOUND));
+                .orElseThrow(ZbException.supplier(ErrorCode.USER_NOT_FOUND, "username: " + userSearch.getUsername()));
     }
     public UserOut selectUserByUsername(String username) {
         UserSearch userSearch = new UserSearch();
@@ -33,11 +33,16 @@ public class UserService {
         userMapper.insertUser(userIn);
         return this.selectUserByUsername(userIn.getUsername());
     }
-    public void insertFollow(Follow follow) {
-        this.selectUserByUsername(follow.getUsername());
+    public void followUser(Follow follow) {
+        if (follow.getFollower().isBlank() || follow.getFollowee().isBlank()) throw ZbException.from(ErrorCode.EMPTY_FOLLOW_REQUEST);
+        if (follow.getFollower().equals(follow.getFollowee())) throw ZbException.from(ErrorCode.SELF_FOLLOWING_REQUEST);
+        this.selectUserByUsername(follow.getFollower());
+        this.selectUserByUsername(follow.getFollowee());
+        userMapper.insertFollow(follow);
     }
-    public void removeFollow(Follow follow) {
+    public void unfollowUser(Follow follow) {
         userMapper.selectFollow(follow)
-                .orElseThrow();
+                .orElseThrow(ZbException.supplier(ErrorCode.FOLLOW_NOT_FOUND, follow.getFollower() + "-" + follow.getFollowee()));
+        userMapper.deleteFollow(follow);
     }
 }

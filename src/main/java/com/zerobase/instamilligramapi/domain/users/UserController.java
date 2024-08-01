@@ -4,7 +4,9 @@ import com.zerobase.instamilligramapi.domain.users.dto.AuthIn;
 import com.zerobase.instamilligramapi.domain.users.dto.Follow;
 import com.zerobase.instamilligramapi.domain.users.dto.UserIn;
 import com.zerobase.instamilligramapi.domain.users.dto.UserOut;
+import com.zerobase.instamilligramapi.global.dto.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Path;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -38,10 +40,19 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @Operation(summary = "팔로우 API", description = "팔로우 생성")
+    @Operation(summary = "팔로우 API", description = "팔로우")
     @PostMapping("/{username}/follow")
-    public ResponseEntity<UserOut> followUser(@RequestBody Follow follow) {
-//        UserOut user = userService.insertUser(userIn);
-        return ResponseEntity.ok(null);
+    public ResponseEntity<BaseResponse> followUser(@RequestHeader("current-username") String currentUsername, @PathVariable String username) {
+        Follow follow = Follow.follower(currentUsername).isFollowing(username);
+        userService.followUser(follow);
+        return ResponseEntity.ok(BaseResponse.success());
+    }
+
+    @Operation(summary = "언팔로우 API", description = "언팔로우")
+    @DeleteMapping("/{username}/follow")
+    public ResponseEntity<BaseResponse> unfollowUser(@RequestHeader("current-username") String currentUsername, @PathVariable String username) {
+        Follow follow = Follow.follower(currentUsername).isFollowing(username);
+        userService.unfollowUser(follow);
+        return ResponseEntity.ok(BaseResponse.success());
     }
 }

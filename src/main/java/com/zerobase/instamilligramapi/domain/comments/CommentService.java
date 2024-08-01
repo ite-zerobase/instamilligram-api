@@ -9,6 +9,7 @@ import com.zerobase.instamilligramapi.domain.posts.dto.PostIn;
 import com.zerobase.instamilligramapi.domain.posts.dto.PostMeta;
 import com.zerobase.instamilligramapi.domain.posts.dto.PostOut;
 import com.zerobase.instamilligramapi.domain.users.UserMapper;
+import com.zerobase.instamilligramapi.domain.users.dto.UserSearch;
 import com.zerobase.instamilligramapi.global.exceptions.ErrorCode;
 import com.zerobase.instamilligramapi.global.exceptions.ZbException;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,7 @@ public class CommentService {
     
     public CommentOut selectCommentByCommentId(Integer commentId) {
         return commentMapper.selectCommentByCommentId(commentId)
-                .orElseThrow(ZbException.supplier(ErrorCode.COMMENT_NOT_FOUND));
+                .orElseThrow(ZbException.supplier(ErrorCode.COMMENT_NOT_FOUND, "commentId: " + commentId));
     }
 
     public List<CommentOut> selectRepliesByCommentId(int commentId, String currentUsername) {
@@ -51,16 +52,16 @@ public class CommentService {
         if (commentIn.getParentId() <= 0) {
             commentIn.setParentId(null);
         }
-        userMapper.selectUserByUsername(commentIn.getUsername())
-                .orElseThrow(ZbException.supplier(ErrorCode.USER_NOT_FOUND));
+        userMapper.selectUserByUserSearch(UserSearch.username(commentIn.getUsername()))
+                .orElseThrow(ZbException.supplier(ErrorCode.USER_NOT_FOUND, "username: " + commentIn.getUsername()));
         PostIn postIn = new PostIn();
         postIn.setPostId(commentIn.getPostId());
         postMapper.selectPost(postIn)
-                .orElseThrow(ZbException.supplier(ErrorCode.TARGET_POST_NOT_FOUND));
+                .orElseThrow(ZbException.supplier(ErrorCode.TARGET_POST_NOT_FOUND, "postId: " + commentIn.getPostId()));
 
         if (commentIn.getParentId() != null) {
             commentMapper.selectCommentByCommentId(commentIn.getParentId())
-                    .orElseThrow(ZbException.supplier(ErrorCode.TARGET_COMMENT_NOT_FOUND));
+                    .orElseThrow(ZbException.supplier(ErrorCode.TARGET_COMMENT_NOT_FOUND, "commentId: " + commentIn.getCommentId()));
         }
         commentMapper.insertComment(commentIn);
 
@@ -82,10 +83,10 @@ public class CommentService {
                 .ifPresent(a -> {
                     throw ZbException.from(ErrorCode.COMMENT_ALREADY_LIKED);
                 });
-        userMapper.selectUserByUsername(commentMeta.getUsername())
-                .orElseThrow(ZbException.supplier(ErrorCode.USER_NOT_FOUND));
+        userMapper.selectUserByUserSearch(UserSearch.username(commentMeta.getUsername()))
+                .orElseThrow(ZbException.supplier(ErrorCode.USER_NOT_FOUND, "username: " + username));
         commentMapper.selectCommentByCommentId(commentMeta.getCommentId())
-                .orElseThrow(ZbException.supplier(ErrorCode.TARGET_COMMENT_NOT_FOUND));
+                .orElseThrow(ZbException.supplier(ErrorCode.TARGET_COMMENT_NOT_FOUND, "commentId: " + commentId));
         commentMapper.insertCommentLike(commentMeta);
         commentMapper.updateCommentLikeCount(commentMeta);
     }

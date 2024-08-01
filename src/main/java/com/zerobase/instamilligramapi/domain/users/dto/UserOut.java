@@ -16,6 +16,8 @@ public class UserOut extends AuditDto {
     private Integer userId;
     private String username;
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Boolean following;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String email;
     @JsonIgnore
     private String passwordHash;

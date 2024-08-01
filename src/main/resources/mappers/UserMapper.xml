@@ -34,18 +34,40 @@
         WHERE username = #{username} AND password_hash = #{passwordHash}
     </select>
 
-    <select id="selectUserByUsername" parameterType="UserSearch" resultType="UserOut">
-        SELECT
-            user_id,
-            username,
-            email,
-            password_hash,
-            profile_picture_url,
-            bio,
-            created_at,
-            updated_at
+    <select id="selectUserByUserSearch" parameterType="UserSearch" resultType="UserOut">
+        SELECT /* selectUserByUserSearch */
+            u.user_id,
+            u.username,
+            u.email,
+            u.password_hash,
+            u.profile_picture_url,
+            u.bio,
+            <if test="currentUsername">
+                EXISTS (SELECT f.followed_at FROM follows f WHERE f.follower = #{currentUsername} and f.followee = u.username) as following,
+            </if>
+            u.created_at,
+            u.updated_at
         FROM users u
-        LEFT JOIN follows f ON u.username = f. /* TODO. 현재 유저가 대상 유저 팔로우 여부 selectOnePost 에서도 해야함*/
-        WHERE username = #{username}
+        WHERE u.username = #{username}
     </select>
+
+    <select id="selectFollow" parameterType="Follow">
+        SELECT /* selectFollow */
+            follower, followee, followed_at
+        FROM follows
+        WHERE follower = #{follower} and followee = #{followee}
+    </select>
+
+    <insert id="insertFollow" parameterType="Follow">
+        INSERT INTO follows /* insertFollow */
+        (follower, followee)
+        VALUES (#{follower}, #{followee});
+    </insert>
+
+    <delete id="deleteFollow" parameterType="Follow">
+        DELETE /* deleteFollow */
+        FROM follows
+        WHERE follower = #{follower} and followee = #{followee}
+    </delete>
+
 </mapper>

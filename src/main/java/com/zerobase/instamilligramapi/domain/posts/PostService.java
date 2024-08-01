@@ -4,10 +4,12 @@ import com.zerobase.instamilligramapi.domain.comments.CommentService;
 import com.zerobase.instamilligramapi.domain.comments.dto.CommentOut;
 import com.zerobase.instamilligramapi.domain.posts.dto.*;
 import com.zerobase.instamilligramapi.domain.users.UserMapper;
+import com.zerobase.instamilligramapi.domain.users.dto.UserSearch;
 import com.zerobase.instamilligramapi.global.dto.Paging;
 import com.zerobase.instamilligramapi.global.exceptions.ErrorCode;
 import com.zerobase.instamilligramapi.global.exceptions.ZbException;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,8 +25,8 @@ public class PostService {
     private final CommentService commentService;
 
     public PostOut insertPost(PostIn post) {
-        userMapper.selectUserByUsername(post.getUsername())
-                        .orElseThrow(ZbException.supplier(ErrorCode.USER_NOT_FOUND));
+        userMapper.selectUserByUserSearch(UserSearch.username(post.getUsername()))
+                        .orElseThrow(ZbException.supplier(ErrorCode.USER_NOT_FOUND, "username: " + post.getUsername()));
         if (post.getMedia().isEmpty()) {
             throw ZbException.from(ErrorCode.POST_MEDIA_NOT_FOUND);
         }
@@ -40,7 +42,7 @@ public class PostService {
         postIn.setPostId(postId);
         postIn.setCurrentUsername(username);
         PostOut postOut = postMapper.selectPost(postIn)
-                .orElseThrow(ZbException.supplier(ErrorCode.POST_NOT_FOUND));
+                .orElseThrow(ZbException.supplier(ErrorCode.POST_NOT_FOUND, "postId: " + postId));
         List<CommentOut> comments = commentService.selectCommentsByPost(postIn);
         postOut.setComments(comments);
         return postOut;
@@ -54,9 +56,10 @@ public class PostService {
         postMeta.setPostId(postId);
         postMeta.setUsername(username);
         postMeta.setSign(1);
+        this.selectPost(postId, username);
         postMapper.selectPostLike(postMeta)
                 .ifPresent(a -> {
-                    throw ZbException.from(ErrorCode.POST_ALREADY_LIKED);
+                    throw ZbException.from(ErrorCode.POST_ALREADY_LIKED, "postId: " + postId);
                 });
         postMapper.insertPostLike(postMeta);
         postMapper.updatePostLikeCount(postMeta);

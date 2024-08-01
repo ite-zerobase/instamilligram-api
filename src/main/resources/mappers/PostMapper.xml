@@ -27,8 +27,8 @@
         VALUES
         (
             #{postId},
-            #{Media},
-            #{MediaType}
+            #{mediaUrl},
+            #{mediaType}
         )
 
     </insert>
@@ -39,6 +39,7 @@
             p.created_by,
             u.username,
             u.profile_picture_url,
+            EXISTS (SELECT f.followed_at FROM follows f WHERE f.follower = #{currentUsername} and f.followee = u.username) as following,
             p.caption,
             p.created_at,
             p.updated_at,
@@ -64,6 +65,7 @@
                 p.created_by,
                 u.username,
                 u.profile_picture_url,
+                null as following,
                 p.caption,
                 p.created_at,
                 p.updated_at,
@@ -98,7 +100,7 @@
         <result property="place" column="place"/>
         <result property="liked" column="liked"/>
         <result property="likedAt" column="liked_at"/>
-        <association property="writer" resultMap="PostWriter" javaType="UserOut" notNullColumn="username"/>
+        <association property="writer" resultMap="PostWriterMap" javaType="UserOut" notNullColumn="username"/>
         <collection property="media" ofType="PostMediaOut" notNullColumn="media_id"
                     resultMap="PostOutMediaMap"/>
     </resultMap>
@@ -108,10 +110,12 @@
         <result property="mediaType" column="media_type"/>
     </resultMap>
 
-    <resultMap id="PostWriter" type="UserOut">
+    <resultMap id="PostWriterMap" type="UserOut">
         <id property="username" column="username"/>
         <result property="profilePictureUrl" column="profile_picture_url"/>
+        <result property="following" column="following"/>
     </resultMap>
+
     <insert id="insertPostLike" parameterType="PostMeta">
         INSERT INTO post_likes
         (

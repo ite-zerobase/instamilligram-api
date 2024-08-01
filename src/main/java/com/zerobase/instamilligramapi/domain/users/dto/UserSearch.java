@@ -10,4 +10,12 @@ public class UserSearch {
     private String username;
     @JsonIgnore
     private String currentUsername;
+    @JsonIgnore
+    private boolean detailed;
+
+    public static UserSearch username(String u) {
+        UserSearch userSearch = new UserSearch();
+        userSearch.setUsername(u);
+        return userSearch;
+    }
 }
