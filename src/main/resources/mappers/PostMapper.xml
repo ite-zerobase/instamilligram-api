@@ -39,7 +39,7 @@
             p.created_by,
             u.username,
             u.profile_picture_url,
-            EXISTS (SELECT f.followed_at FROM follows f WHERE f.follower = #{currentUsername} and f.followee = u.username) as following,
+            EXISTS (SELECT f.followed_at FROM follows f WHERE f.follower = #{requestingUser} and f.followee = u.username) as following,
             p.caption,
             p.created_at,
             p.updated_at,

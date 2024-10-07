@@ -44,7 +44,7 @@ public class UserService {
     }
     public Follow insertFollow(String username, String requestingUser) {
         UserOut user = this.selectUserByUsername(username, requestingUser);
-        if (user.getFollow() != null) {
+        if (user.getFollowing()) {
             throw ZbException.from(ErrorCode.USER_ALREADY_FOLLOWING);
         };
         Follow follow = new Follow();

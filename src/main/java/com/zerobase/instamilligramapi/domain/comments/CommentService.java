@@ -49,7 +49,7 @@ public class CommentService {
     }
 
     public CommentOut insertComment(CommentIn commentIn) {
-        if (commentIn.getParentId() <= 0) {
+        if (commentIn.getParentId() != null && commentIn.getParentId() <= 0) {
             commentIn.setParentId(null);
         }
         userMapper.selectUserByUserSearch(UserSearch.username(commentIn.getUsername()))

@@ -28,6 +28,4 @@ public class UserOut extends AuditDto {
     private Profile profile;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PostOut> posts;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Follow follow;
 }

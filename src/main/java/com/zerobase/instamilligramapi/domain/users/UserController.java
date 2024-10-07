@@ -25,7 +25,7 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @Operation(summary = "유저 조회 API", description = "username으로 유저 정보 반환. requesting-user는 대상 유저 정보를 조회하고자 하는 사람.")
+    @Operation(summary = "유저 조회 API", description = "username의 정보 반환. requesting-user는 대상 유저 정보를 조회하고자 하는 사람.")
     @GetMapping("/{username}")
     public ResponseEntity<UserOut> getUserByUsername(@RequestHeader("requesting-user") String requestingUser, @PathVariable String username) {
         UserOut user = userService.selectUserByUsername(username, requestingUser);
