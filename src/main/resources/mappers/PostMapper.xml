@@ -52,7 +52,7 @@
             m.media_type
         FROM posts p
         JOIN users u ON p.created_by = u.username
-        LEFT JOIN post_likes l ON p.post_id = l.post_id and l.username = #{currentUsername}
+        LEFT JOIN post_likes l ON p.post_id = l.post_id and l.username = #{requestingUser}
         LEFT JOIN post_media m ON p.post_id = m.post_id
         WHERE p.post_id = #{postId}
     </select>
@@ -74,7 +74,7 @@
                 l.liked_at
             FROM posts p
             JOIN users u ON p.created_by = u.username
-            LEFT JOIN post_likes l ON p.post_id = l.post_id and l.username = #{currentUsername}
+            LEFT JOIN post_likes l ON p.post_id = l.post_id and l.username = #{requestingUser}
             ORDER BY p.created_at
             OFFSET (#{page}-1)*#{size} FETCH FIRST #{size} ROWS only
         )

@@ -30,20 +30,20 @@ public class CommentController {
     }
 
     @GetMapping("/{commentId}/replies")
-    public ResponseEntity<List<CommentOut>> getRepliesByCommentId(@RequestHeader("current-username") String currentUsername, @PathVariable int commentId) {
-        List<CommentOut> replies = commentService.selectRepliesByCommentId(commentId, currentUsername);
+    public ResponseEntity<List<CommentOut>> getRepliesByCommentId(@RequestHeader("requesting-user") String requestingUser, @PathVariable int commentId) {
+        List<CommentOut> replies = commentService.selectRepliesByCommentId(commentId, requestingUser);
         return ResponseEntity.ok(replies);
     }
 
     @PostMapping("/{commentId}/like")
-    public ResponseEntity<BaseResponse> createCommentLike(@RequestHeader("current-username") String currentUsername, @PathVariable Integer commentId) {
-        commentService.insertCommentLike(currentUsername, commentId);
+    public ResponseEntity<BaseResponse> createCommentLike(@RequestHeader("requesting-user") String requestingUser, @PathVariable Integer commentId) {
+        commentService.insertCommentLike(requestingUser, commentId);
         return ResponseEntity.ok(BaseResponse.success());
     }
 
     @DeleteMapping("/{commentId}/like")
-    public ResponseEntity<BaseResponse> deleteCommentLike(@RequestHeader("current-username") String currentUsername, @PathVariable Integer commentId) {
-        commentService.deleteCommentLike(currentUsername, commentId);
+    public ResponseEntity<BaseResponse> deleteCommentLike(@RequestHeader("requesting-user") String requestingUser, @PathVariable Integer commentId) {
+        commentService.deleteCommentLike(requestingUser, commentId);
         return ResponseEntity.ok(BaseResponse.success());
     }
 }

@@ -2,6 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="com.zerobase.instamilligramapi.domain.users.UserMapper">
+    <resultMap id="UserOutMap" type="UserOut">
+        <id property="userId" column="user_id"/>
+        <result property="username" column="username"/>
+        <result property="email" column="email"/>
+        <result property="passwordHash" column="password_hash"/>
+        <result property="profilePictureUrl" column="profile_picture_url"/>
+        <result property="bio" column="bio"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+        <association property="follow" resultMap="FollowMap" javaType="Follow" notNullColumn="follower"/>
+    </resultMap>
+
+    <resultMap id="FollowMap" type="Follow">
+        <result property="follower" column="follower"/>
+        <result property="followee" column="followee"/>
+        <result property="followedAt" column="followed_at"/>
+    </resultMap>
+
+
     <insert id="insertUser" parameterType="UserIn" useGeneratedKeys="true" keyColumn="user_id" keyProperty="userId">
         INSERT INTO users
         (
@@ -34,7 +53,7 @@
         WHERE username = #{username} AND password_hash = #{passwordHash}
     </select>
 
-    <select id="selectUserByUsername" parameterType="UserSearch" resultType="UserOut">
+    <select id="selectUserByUserSearch" parameterType="UserSearch" resultMap="UserOutMap">
         SELECT
             user_id,
             username,
@@ -43,9 +62,43 @@
             profile_picture_url,
             bio,
             created_at,
-            updated_at
+            updated_at,
+            f.follower,
+            f.followee,
+            f.followed_at
         FROM users u
-        LEFT JOIN follows f ON u.username = f. /* TODO. 현재 유저가 대상 유저 팔로우 여부 selectOnePost 에서도 해야함*/
+        LEFT JOIN follows f ON u.username = f.followee AND f.follower = #{requestingUser}
         WHERE username = #{username}
     </select>
+
+    <select id="selectFollow" parameterType="Follow" resultType="Follow">
+        SELECT
+            follower,
+            followee,
+            followed_at
+        FROM follows
+        WHERE follower = #{follower}
+        AND followee = #{followee}
+    </select>
+
+    <insert id="insertFollow" parameterType="Follow">
+        INSERT INTO follows
+        (
+            follower,
+            followee,
+            followed_at
+        )
+        VALUES (
+            #{follower},
+            #{followee},
+            now()
+        )
+        RETURNING followed_at
+    </insert>
+
+    <delete id="deleteFollow" parameterType="Follow">
+        DELETE
+        FROM follows
+        WHERE follower = #{follower} AND followee = #{followee}
+    </delete>
 </mapper>
