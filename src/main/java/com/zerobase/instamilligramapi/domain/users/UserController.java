@@ -6,7 +6,6 @@ import com.zerobase.instamilligramapi.domain.users.dto.UserIn;
 import com.zerobase.instamilligramapi.domain.users.dto.UserOut;
 import com.zerobase.instamilligramapi.global.dto.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
-import jakarta.validation.Path;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -26,10 +25,10 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @Operation(summary = "유저 조회 API", description = "username으로 유저 정보 반환")
+    @Operation(summary = "유저 조회 API", description = "username으로 유저 정보 반환. requesting-user는 대상 유저 정보를 조회하고자 하는 사람.")
     @GetMapping("/{username}")
-    public ResponseEntity<UserOut> getUserByUsername(@PathVariable String username) {
-        UserOut user = userService.selectUserByUsername(username);
+    public ResponseEntity<UserOut> getUserByUsername(@RequestHeader("requesting-user") String requestingUser, @PathVariable String username) {
+        UserOut user = userService.selectUserByUsername(username, requestingUser);
         return ResponseEntity.ok(user);
     }
 
@@ -40,19 +39,16 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @Operation(summary = "팔로우 API", description = "팔로우")
+    @Operation(summary = "팔로우 생성 API", description = "requesting-user이 팔로우를 누른 사람. username은 팔로우 대상")
     @PostMapping("/{username}/follow")
-    public ResponseEntity<BaseResponse> followUser(@RequestHeader("current-username") String currentUsername, @PathVariable String username) {
-        Follow follow = Follow.follower(currentUsername).isFollowing(username);
-        userService.followUser(follow);
-        return ResponseEntity.ok(BaseResponse.success());
+    public ResponseEntity<Follow> followUser(@RequestHeader("requesting-user") String requestingUser, @PathVariable String username) {
+        Follow result = userService.insertFollow(username, requestingUser);
+        return ResponseEntity.ok(result);
     }
-
-    @Operation(summary = "언팔로우 API", description = "언팔로우")
+    @Operation(summary = "팔로우 삭제 API", description = "requesting-user가 username을 언팔로우")
     @DeleteMapping("/{username}/follow")
-    public ResponseEntity<BaseResponse> unfollowUser(@RequestHeader("current-username") String currentUsername, @PathVariable String username) {
-        Follow follow = Follow.follower(currentUsername).isFollowing(username);
-        userService.unfollowUser(follow);
+    public ResponseEntity<BaseResponse> removeFollow(@RequestHeader("requesting-user") String requestingUser, @PathVariable String username) {
+        userService.removeFollow(username, requestingUser);
         return ResponseEntity.ok(BaseResponse.success());
     }
 }

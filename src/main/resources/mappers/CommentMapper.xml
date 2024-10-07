@@ -49,7 +49,7 @@
             COALESCE(l.liked_at IS NOT NULL, false) as liked,
             l.liked_at
         FROM comments c
-        LEFT JOIN comment_likes l ON c.comment_id = l.comment_id AND l.username = #{currentUsername}
+        LEFT JOIN comment_likes l ON c.comment_id = l.comment_id AND l.username = #{requestingUser}
         WHERE
         <if test="commentId != null">
             parent_id = #{commentId}

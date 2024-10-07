@@ -27,20 +27,20 @@ public class PostController {
     }
 
     @GetMapping("/{postId}")
-    public ResponseEntity<PostOut> getPost(@RequestHeader("current-username") String currentUsername, @PathVariable Integer postId) {
-        PostOut postOut = postService.selectPost(postId, currentUsername);
+    public ResponseEntity<PostOut> getPost(@RequestHeader("requesting-user") String requestingUser, @PathVariable Integer postId) {
+        PostOut postOut = postService.selectPost(postId, requestingUser);
         return ResponseEntity.ok(postOut);
     }
 
     @PostMapping("/{postId}/like")
-    public ResponseEntity<BaseResponse> createPostLike(@RequestHeader("current-username") String currentUsername, @PathVariable Integer postId) {
-        postService.insertPostLike(postId, currentUsername);
+    public ResponseEntity<BaseResponse> createPostLike(@RequestHeader("requesting-user") String requestingUser, @PathVariable Integer postId) {
+        postService.insertPostLike(postId, requestingUser);
         return ResponseEntity.ok(BaseResponse.success());
     }
 
     @DeleteMapping("/{postId}/like")
-    public ResponseEntity<BaseResponse> deletePostLike(@RequestHeader("current-username") String currentUsername, @PathVariable Integer postId) {
-       postService.deletePostLike(postId, currentUsername);
+    public ResponseEntity<BaseResponse> deletePostLike(@RequestHeader("requesting-user") String requestingUser, @PathVariable Integer postId) {
+       postService.deletePostLike(postId, requestingUser);
         return ResponseEntity.ok(BaseResponse.success());
     }
 

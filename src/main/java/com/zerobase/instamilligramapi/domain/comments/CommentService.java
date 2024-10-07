@@ -31,11 +31,11 @@ public class CommentService {
                 .orElseThrow(ZbException.supplier(ErrorCode.COMMENT_NOT_FOUND, "commentId: " + commentId));
     }
 
-    public List<CommentOut> selectRepliesByCommentId(int commentId, String currentUsername) {
-        return this.selectCommentsByCommentSearch(CommentSearch.fromCommentId(commentId, currentUsername));
+    public List<CommentOut> selectRepliesByCommentId(int commentId, String requestingUser) {
+        return this.selectCommentsByCommentSearch(CommentSearch.fromCommentId(commentId, requestingUser));
     }
     public List<CommentOut> selectCommentsByPost(PostIn postIn) {
-        return this.selectCommentsByCommentSearch(CommentSearch.fromPostId(postIn.getPostId(), postIn.getCurrentUsername()));
+        return this.selectCommentsByCommentSearch(CommentSearch.fromPostId(postIn.getPostId(), postIn.getRequestingUser()));
     }
 
     public List<CommentOut> selectCommentsByCommentSearch(CommentSearch commentSearch) {

@@ -14,6 +14,6 @@ public class Paging {
     private int page = 1;
     @Max(value = 10, message = "size는 10 이하여야 합니다.")
     private int size = 10;
-    @NotNull(message = "currentUsername은 null일 수 없습니다.")
-    private String currentUsername;
+    @NotNull(message = "requestingUser은 null일 수 없습니다.")
+    private String requestingUser;
 }

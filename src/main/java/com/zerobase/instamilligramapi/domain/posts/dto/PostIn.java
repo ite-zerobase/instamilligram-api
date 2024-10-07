@@ -17,5 +17,5 @@ public class PostIn{
     private String place;
     private List<PostMediaIn> media;
     @JsonIgnore
-    private String currentUsername;
+    private String requestingUser;
 }

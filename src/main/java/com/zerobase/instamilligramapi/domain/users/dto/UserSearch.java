@@ -9,7 +9,7 @@ public class UserSearch {
     @NotNull(message = "username은 null일 수 없습니다.")
     private String username;
     @JsonIgnore
-    private String currentUsername;
+    private String requestingUser;
     @JsonIgnore
     private boolean detailed;
 

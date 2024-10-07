@@ -40,7 +40,7 @@ public class PostService {
     public PostOut selectPost(Integer postId, String username) {
         PostIn postIn = new PostIn();
         postIn.setPostId(postId);
-        postIn.setCurrentUsername(username);
+        postIn.setRequestingUser(username);
         PostOut postOut = postMapper.selectPost(postIn)
                 .orElseThrow(ZbException.supplier(ErrorCode.POST_NOT_FOUND, "postId: " + postId));
         List<CommentOut> comments = commentService.selectCommentsByPost(postIn);
