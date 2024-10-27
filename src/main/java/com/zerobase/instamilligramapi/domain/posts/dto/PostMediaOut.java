@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 @Data
 public class PostMediaOut extends AuditDto {
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Integer mediaId;
+    private Integer mediaSeq;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer postId;
     private String mediaUrl;

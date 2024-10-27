@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 @Data
 public class PostMediaIn {
     @JsonIgnore
-    private Integer mediaId;
+    private Integer mediaSeq;
     @JsonIgnore
     private Integer postId;
     private String mediaUrl;

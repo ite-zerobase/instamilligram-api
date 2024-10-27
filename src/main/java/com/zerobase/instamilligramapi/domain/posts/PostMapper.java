@@ -18,4 +18,5 @@ public interface PostMapper {
     void updatePostCommentCount(PostMeta postMeta);
     void insertPostMedia(PostMediaIn postMedia);
     Optional<PostLike> selectPostLike(PostMeta postMeta);
+    List<PostMediaOut> selectPostMedia(int postId);
 }

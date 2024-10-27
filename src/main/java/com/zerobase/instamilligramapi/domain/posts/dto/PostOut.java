@@ -21,5 +21,4 @@ public class PostOut extends AuditDto {
     private boolean liked;
     private LocalDateTime likedAt;
     private List<PostMediaOut> media;
-    private List<CommentOut> comments;
 }

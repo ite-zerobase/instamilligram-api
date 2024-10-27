@@ -1,5 +1,5 @@
 CREATE TABLE post_media (
-    media_id SERIAL PRIMARY KEY,
+    media_seq INTEGER NOT NULL,
     post_id INTEGER NOT NULL,
     media_url TEXT NOT NULL,
     media_type VARCHAR(10), -- 'image' 또는 'video'와 같은 값

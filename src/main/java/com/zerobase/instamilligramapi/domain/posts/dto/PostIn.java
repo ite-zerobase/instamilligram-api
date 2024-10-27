@@ -10,12 +10,11 @@ import java.util.List;
 public class PostIn{
     @JsonIgnore
     private Integer postId;
-    @NotNull(message = "username 필드는 null일 수 없습니다.")
     private String username;
-    @NotNull(message = "caption 필드는 null일 수 없습니다.")
+//    @NotNull(message = "caption 필드는 null일 수 없습니다.")
     private String caption;
     private String place;
-    private List<PostMediaIn> media;
+//    private List<PostMediaIn> media;
     @JsonIgnore
     private String requestingUser;
 }

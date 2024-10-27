@@ -8,11 +8,16 @@ import com.zerobase.instamilligramapi.domain.users.dto.UserSearch;
 import com.zerobase.instamilligramapi.global.dto.Paging;
 import com.zerobase.instamilligramapi.global.exceptions.ErrorCode;
 import com.zerobase.instamilligramapi.global.exceptions.ZbException;
+import com.zerobase.instamilligramapi.global.utils.FileUploader;
+import com.zerobase.instamilligramapi.global.utils.IdGenerator;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.User;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,31 +27,54 @@ public class PostService {
 
     private final PostMapper postMapper;
     private final UserMapper userMapper;
-    private final CommentService commentService;
+    private final FileUploader fileUploader;
 
-    public PostOut insertPost(PostIn post) {
+    public void insertPost(PostIn post) {
         userMapper.selectUserByUserSearch(UserSearch.username(post.getUsername()))
                         .orElseThrow(ZbException.supplier(ErrorCode.USER_NOT_FOUND, "username: " + post.getUsername()));
-        if (post.getMedia().isEmpty()) {
+        postMapper.insertPost(post);
+    }
+    public PostOut createPost(PostIn post) {
+        insertPost(post);
+        return this.selectPost(post.getPostId(), post.getUsername());
+    }
+
+    public List<PostMediaOut> uploadPostMedia(int postId, List<MultipartFile> images) {
+        this.selectPost(postId, null);
+        if (images.isEmpty()) {
             throw ZbException.from(ErrorCode.POST_MEDIA_NOT_FOUND);
         }
-        postMapper.insertPost(post);
-        for (PostMediaIn media: post.getMedia()) {
-            media.setPostId(post.getPostId());
+        List<PostMediaIn> mediaList = new ArrayList<>();
+
+        for (int i = 0; i < images.size(); i++) {
+            MultipartFile file = images.get(i);
+            String ext = fileUploader.extractExtension(file);
+            String imageId = IdGenerator.generateId();
+            String filename = "p_" + postId + "_" + i + "_" + imageId + "." + ext;
+
+            String result = fileUploader.upload(file, filename);
+
+            PostMediaIn media = new PostMediaIn();
+            media.setPostId(postId);
+            media.setMediaSeq(i + 1);
+            media.setMediaType("image");
+            media.setMediaUrl(result);
+
+            mediaList.add(media);
+        }
+        for (PostMediaIn media: mediaList) {
             postMapper.insertPostMedia(media);
         }
-        return this.selectPost(post.getPostId(), post.getUsername());
+        return postMapper.selectPostMedia(postId);
     }
     public PostOut selectPost(Integer postId, String username) {
         PostIn postIn = new PostIn();
         postIn.setPostId(postId);
         postIn.setRequestingUser(username);
-        PostOut postOut = postMapper.selectPost(postIn)
+        return postMapper.selectPost(postIn)
                 .orElseThrow(ZbException.supplier(ErrorCode.POST_NOT_FOUND, "postId: " + postId));
-        List<CommentOut> comments = commentService.selectCommentsByPost(postIn);
-        postOut.setComments(comments);
-        return postOut;
     }
+
     public List<PostOut> selectManyPost(Paging page) {
         return postMapper.selectManyPost(page);
     }

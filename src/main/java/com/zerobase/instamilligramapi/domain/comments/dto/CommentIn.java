@@ -10,7 +10,6 @@ import lombok.EqualsAndHashCode;
 public class CommentIn {
     @JsonIgnore
     private Integer commentId;
-    @NotNull(message = "postId 필드는 null일 수 없습니다.")
     private Integer postId;
     @NotNull(message = "username 필드는 null일 수 없습니다.")
     private String username;

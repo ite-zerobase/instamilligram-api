@@ -21,12 +21,14 @@
         INSERT INTO post_media
         (
             post_id,
+            media_seq,
             media_url,
             media_type
         )
         VALUES
         (
             #{postId},
+            #{mediaSeq},
             #{mediaUrl},
             #{mediaType}
         )
@@ -48,7 +50,7 @@
             p.place,
             COALESCE(l.liked_at IS NOT NULL, false) as liked,
             l.liked_at,
-            m.media_id,
+            m.media_seq,
             m.media_url,
             m.media_type
         FROM posts p
@@ -82,7 +84,7 @@
         )
         SELECT
             p.*,
-            m.media_id,
+            m.media_seq,
             m.media_url,
             m.media_type
         FROM SelectedPosts p
@@ -101,7 +103,7 @@
         <result property="liked" column="liked"/>
         <result property="likedAt" column="liked_at"/>
         <association property="writer" resultMap="PostWriterMap" javaType="UserOut" notNullColumn="username"/>
-        <collection property="media" ofType="PostMediaOut" notNullColumn="media_id"
+        <collection property="media" ofType="PostMediaOut" notNullColumn="media_seq"
                     resultMap="PostOutMediaMap"/>
     </resultMap>
 
@@ -150,5 +152,17 @@
         FROM post_likes
         WHERE post_id = #{postId}
         AND username = #{username}
+    </select>
+
+    <select id="selectPostMedia" parameterType="Integer" resultType="PostMediaOut">
+        SELECT
+            post_id,
+            media_seq,
+            media_url,
+            media_type,
+            created_at
+        FROM post_media
+        WHERE post_id = #{postId}
+        ORDER BY media_seq
     </select>
 </mapper>
