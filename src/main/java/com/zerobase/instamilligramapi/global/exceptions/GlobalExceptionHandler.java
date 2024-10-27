@@ -1,12 +1,9 @@
 package com.zerobase.instamilligramapi.global.exceptions;
 
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import jakarta.servlet.ServletException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;

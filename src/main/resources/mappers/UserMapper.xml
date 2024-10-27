@@ -51,6 +51,27 @@
         WHERE u.username = #{username}
     </select>
 
+    <update id="updateUserProfileImageUrl" parameterType="String">
+        UPDATE users
+        SET profile_picture_url = #{profilePictureUrl},
+            updated_at = now()
+        WHERE username = #{username}
+    </update>
+
+    <select id="selectDuplicateUsername" parameterType="String" resultType="UserOut">
+        SELECT
+            u.username
+        FROM users u
+        WHERE username = #{username}
+    </select>
+
+    <select id="selectDuplicateEmail" parameterType="String" resultType="UserOut">
+        SELECT
+            u.email
+        FROM users u
+        WHERE email = #{email}
+    </select>
+
     <select id="selectFollow" parameterType="Follow" resultType="Follow">
         SELECT /* selectFollow */
             follower,

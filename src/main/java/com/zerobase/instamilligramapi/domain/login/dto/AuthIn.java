@@ -1,4 +1,4 @@
-package com.zerobase.instamilligramapi.domain.users.dto;
+package com.zerobase.instamilligramapi.domain.login.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotNull;

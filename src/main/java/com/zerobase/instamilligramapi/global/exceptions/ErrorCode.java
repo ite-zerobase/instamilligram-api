@@ -11,6 +11,11 @@ public enum ErrorCode {
     EMPTY_COMMENT_SEARCH_REQUEST(HttpStatus.BAD_REQUEST, "postId 또는 commentId는 필수값입니다.", "C4001"),
     BAD_COMMENT_SEARCH_REQUEST(HttpStatus.BAD_REQUEST, "postId와 commentId를 동시에 명시할 수 없습니다.", "C4002"),
 
+    /* 401 */
+    TOKEN_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다.", "C4011"),
+    TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "만료된 토큰입니다.", "C4012"),
+    TOKEN_NULL(HttpStatus.UNAUTHORIZED, "토큰이 없습니다..", "C4013"),
+
     /* 404 */
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 게시글이 없습니다.", "P4041"),
     TARGET_POST_NOT_FOUND(HttpStatus.NOT_FOUND, "대상 게시글이 없습니다.", "P4042"),
@@ -29,8 +34,11 @@ public enum ErrorCode {
     POST_ALREADY_LIKED(HttpStatus.CONFLICT, "이미 좋아요 한 게시물입니다.", "P4091"),
     COMMENT_ALREADY_LIKED(HttpStatus.CONFLICT, "이미 좋아요 한 댓글입니다.", "C4091"),
     USER_ALREADY_FOLLOWING(HttpStatus.CONFLICT, "이미 팔로우중인 대상입니다.", "F4091"),
+    DUPLICATE_USERNAME(HttpStatus.CONFLICT, "이미 존재하는 username입니다.", "U4091"),
+    DUPLICATE_EMAIL(HttpStatus.CONFLICT, "이미 사용중인 email입니다.", "U4092"),
 
-
+    /* 500 */
+    FAILED_TO_UPLOAD(HttpStatus.INTERNAL_SERVER_ERROR, "이미지 업로드에 실패했습니다", "C5001")
     ;
 
     private final HttpStatus status;
