@@ -2,8 +2,7 @@
 FROM openjdk:17-jdk-alpine
 
 # JAR 파일을 컨테이너로 복사할 위치 지정
-ARG JAR_FILE=src/build/libs/instamilligram-api-0.0.1-SNAPSHOT.jar
-COPY ${JAR_FILE} /app.jar
+COPY src/build/libs/instamilligram-api-0.0.1-SNAPSHOT.jar /app.jar
 
 # 애플리케이션 포트 열기 (필요에 따라 수정 가능)
 EXPOSE 8080
