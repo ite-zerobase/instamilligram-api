@@ -1,19 +1,28 @@
 package com.zerobase.instamilligramapi.global.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 @Data
+@Schema(title="PAGE_DTO")
 public class Paging {
+    @Schema(description = "페이지")
+    @NotNull(message = "페이지는 필수값입니다")
     @Min(value = 1, message = "page는 1보다 커야 합니다.")
     private int page = 1;
-    @Max(value = 10, message = "size는 10 이하여야 합니다.")
+    @Schema(description = "조회 사이즈")
+    @NotNull(message = "조회 사이즈는 필수값입니다.")
+    @Size(min = 1, max = 20, message = "한 번에 조회 가능한 게시글 수는 최소 1개에서 최대 20개 입니다. (기본값 10)")
     private int size = 10;
-    @NotNull(message = "requestingUser은 null일 수 없습니다.")
+    @JsonIgnore
     private String requestingUser;
 }

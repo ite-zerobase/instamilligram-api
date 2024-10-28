@@ -6,12 +6,12 @@
         INSERT INTO posts
         (
              created_by,
-             caption,
+             post_content,
              place
         )
         VALUES (
             #{username},
-            #{caption},
+            #{postContent},
             #{place}
         )
         RETURNING post_id
@@ -42,7 +42,7 @@
             u.username,
             u.profile_picture_url,
             EXISTS (SELECT f.followed_at FROM follows f WHERE f.follower = #{requestingUser} and f.followee = u.username) as following,
-            p.caption,
+            p.post_content,
             p.created_at,
             p.updated_at,
             p.like_count,
@@ -68,7 +68,7 @@
                 u.username,
                 u.profile_picture_url,
                 null as following,
-                p.caption,
+                p.post_content,
                 p.created_at,
                 p.updated_at,
                 p.like_count,
@@ -94,7 +94,7 @@
 
     <resultMap id="PostOutMap" type="PostOut">
         <id property="postId" column="post_id"/>
-        <result property="caption" column="caption"/>
+        <result property="postContent" column="post_content"/>
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
         <result property="likeCount" column="like_count"/>
@@ -109,7 +109,7 @@
 
     <resultMap id="PostOutMediaMap" type="PostMediaOut">
         <result property="mediaUrl" column="media_url"/>
-        <result property="mediaType" column="media_type"/>
+        <result property="mediaSeq" column="media_seq"/>
     </resultMap>
 
     <resultMap id="PostWriterMap" type="UserOut">

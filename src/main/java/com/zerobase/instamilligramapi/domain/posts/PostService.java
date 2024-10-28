@@ -35,27 +35,30 @@ public class PostService {
         postMapper.insertPost(post);
     }
     public PostOut createPost(PostIn post) {
+
         insertPost(post);
-        return this.selectPost(post.getPostId(), post.getUsername());
+        List<PostMediaOut> mediaOutList = uploadPostMedia(post);
+        PostOut postOut = this.selectPost(post.getPostId(), post.getUsername());
+        postOut.setMedia(mediaOutList);
+        return postOut;
     }
 
-    public List<PostMediaOut> uploadPostMedia(int postId, List<MultipartFile> images) {
-        this.selectPost(postId, null);
-        if (images.isEmpty()) {
+    public List<PostMediaOut> uploadPostMedia(PostIn post) {
+        if (post.getImages().isEmpty()) {
             throw ZbException.from(ErrorCode.POST_MEDIA_NOT_FOUND);
         }
         List<PostMediaIn> mediaList = new ArrayList<>();
 
-        for (int i = 0; i < images.size(); i++) {
-            MultipartFile file = images.get(i);
+        for (int i = 0; i < post.getImages().size(); i++) {
+            MultipartFile file = post.getImages().get(i);
             String ext = fileUploader.extractExtension(file);
             String imageId = IdGenerator.generateId();
-            String filename = "p_" + postId + "_" + i + "_" + imageId + "." + ext;
+            String filename = "p_" + post.getPostId() + "_" + i + "_" + imageId + "." + ext;
 
             String result = fileUploader.upload(file, filename);
 
             PostMediaIn media = new PostMediaIn();
-            media.setPostId(postId);
+            media.setPostId(post.getPostId());
             media.setMediaSeq(i + 1);
             media.setMediaType("image");
             media.setMediaUrl(result);
@@ -65,8 +68,9 @@ public class PostService {
         for (PostMediaIn media: mediaList) {
             postMapper.insertPostMedia(media);
         }
-        return postMapper.selectPostMedia(postId);
+        return postMapper.selectPostMedia(post.getPostId());
     }
+
     public PostOut selectPost(Integer postId, String username) {
         PostIn postIn = new PostIn();
         postIn.setPostId(postId);

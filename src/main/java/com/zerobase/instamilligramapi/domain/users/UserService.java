@@ -57,6 +57,8 @@ public class UserService {
         };
 
         UserOut userOut = insertUser(userIn);
+        ImageOut imageResult = uploadUserProfile(userIn.getUsername(), userIn.getProfileImage());
+        userOut.setProfilePictureUrl(imageResult.getImageUrl());
         return userOut;
     }
 

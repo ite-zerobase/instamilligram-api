@@ -1,5 +1,6 @@
 package com.zerobase.instamilligramapi.global.exceptions;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 @RequestMapping("/error")
 public class ErrorController {
     @GetMapping("")
+    @Operation(hidden = true)
     public ResponseEntity<?> error(HttpServletRequest request, HttpServletResponse response) {
         if (request.getAttribute("error") instanceof ZbException zbException) {
             return ErrorResponse.toResponseEntity(zbException);

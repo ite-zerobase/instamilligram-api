@@ -69,7 +69,7 @@ public class JwtUtil {
         return authorization;
     }
 
-    public String extractUsernameFromHeader(HttpServletRequest request) {
+    public String extractUsernameFromRequest(HttpServletRequest request) {
         String token = extractTokenFromHeader(request);
         if (token == null) return null;
         return getUsernameFromToken(token);

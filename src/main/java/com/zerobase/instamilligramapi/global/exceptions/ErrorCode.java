@@ -10,6 +10,7 @@ public enum ErrorCode {
     /* 400 */
     EMPTY_COMMENT_SEARCH_REQUEST(HttpStatus.BAD_REQUEST, "postId 또는 commentId는 필수값입니다.", "C4001"),
     BAD_COMMENT_SEARCH_REQUEST(HttpStatus.BAD_REQUEST, "postId와 commentId를 동시에 명시할 수 없습니다.", "C4002"),
+    EMPTY_IMAGE_POST(HttpStatus.BAD_REQUEST, "이미지를 업로드 해 주세요.", "P4001"),
 
     /* 401 */
     TOKEN_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다.", "C4011"),

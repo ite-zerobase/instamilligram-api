@@ -1,7 +1,7 @@
 DROP TABLE posts;
 CREATE TABLE posts (
     post_id SERIAL PRIMARY KEY,
-    caption TEXT NOT NULL,
+    postContent TEXT NOT NULL,
     created_by VARCHAR(50) NOT NULL,
     created_at TIMESTAMP DEFAULT (now() AT TIME ZONE 'Asia/Seoul'),
     updated_at TIMESTAMP DEFAULT (now() AT TIME ZONE 'Asia/Seoul'),

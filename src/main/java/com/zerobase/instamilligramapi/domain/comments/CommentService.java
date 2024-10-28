@@ -61,7 +61,7 @@ public class CommentService {
 
         if (commentIn.getParentId() != null) {
             commentMapper.selectCommentByCommentId(commentIn.getParentId())
-                    .orElseThrow(ZbException.supplier(ErrorCode.TARGET_COMMENT_NOT_FOUND, "commentId: " + commentIn.getCommentId()));
+                    .orElseThrow(ZbException.supplier(ErrorCode.TARGET_COMMENT_NOT_FOUND, "parentId: " + commentIn.getParentId()));
         }
         commentMapper.insertComment(commentIn);
 

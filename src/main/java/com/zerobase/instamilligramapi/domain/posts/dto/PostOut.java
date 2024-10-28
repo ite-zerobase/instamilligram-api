@@ -1,6 +1,5 @@
 package com.zerobase.instamilligramapi.domain.posts.dto;
 
-import com.zerobase.instamilligramapi.domain.comments.dto.CommentOut;
 import com.zerobase.instamilligramapi.domain.users.dto.UserOut;
 import com.zerobase.instamilligramapi.global.dto.AuditDto;
 import lombok.Data;
@@ -14,7 +13,7 @@ import java.util.List;
 public class PostOut extends AuditDto {
     private Integer postId;
     private UserOut writer;
-    private String caption;
+    private String postContent;
     private String place;
     private int likeCount;
     private int commentCount;

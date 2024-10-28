@@ -13,5 +13,4 @@ public class PostMediaOut extends AuditDto {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer postId;
     private String mediaUrl;
-    private String mediaType;
 }

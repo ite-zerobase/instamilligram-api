@@ -3,7 +3,7 @@ spring:
     name: instamilligram-api
   profiles:
     include:
-      - dev
+      - prod
   datasource:
     hikari:
       maximum-pool-size: 4
@@ -32,10 +32,13 @@ logging:
       sqltiming: info
 
 springdoc:
+  api-docs:
+    enabled: true
   packages-to-scan: com.zerobase.instamilligramapi
   default-consumes-media-type: application/json;charset=UTF-8
   default-produces-media-type: application/json;charset=UTF-8
   swagger-ui:
+    enabled: true
     operations-sorter: alpha
     tags-sorter: alpha
     path: /
