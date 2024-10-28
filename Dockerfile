@@ -8,7 +8,7 @@ ENV TZ=Asia/Seoul
 WORKDIR /app
 
 # Copy the Spring Boot application WAR file to the container
-COPY ./build/libs/libs/instamilligram-api-0.0.1-SNAPSHOT.jar /app/instamilligram.jar
+COPY ./build/libs/instamilligram-api-0.0.1-SNAPSHOT.jar /app/instamilligram.jar
 
 # 애플리케이션 포트 열기 (필요에 따라 수정 가능)
 EXPOSE 8080
