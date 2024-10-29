@@ -58,22 +58,19 @@ public class UserService {
         };
 
         UserOut userOut = insertUser(userIn);
-        ImageOut imageResult = uploadUserProfile(userIn.getUsername(), userIn.getProfileImage());
-        userOut.setProfilePictureUrl(imageResult.getImageUrl());
+        String filename = uploadUserProfile(userIn);
+        userIn.setProfilePictureUrl(filename);
+        userMapper.updateUserProfileImageUrl(userIn);
+        userOut.setProfilePictureUrl(filename);
         return userOut;
     }
 
-    public ImageOut uploadUserProfile(String username, MultipartFile file) {
-        String ext = fileUploader.extractExtension(file);
+    public String uploadUserProfile(UserIn user) {
+        String ext = fileUploader.extractExtension(user.getProfileImage());
         String imageId = IdGenerator.generateId();
-        String filename = username + "_" + imageId + "." + ext;
-        fileUploader.upload(file, filename);
-        userMapper.updateUserProfileImageUrl(filename);
-        ImageOut result = new ImageOut();
-        result.setUsername(username);
-        result.setImageUrl(filename);
-        return result;
-
+        String filename = user.getUsername() + "_" + imageId + "." + ext;
+        fileUploader.upload(user.getProfileImage(), filename);
+        return filename;
     }
     public UserOut insertUser(UserIn userIn) {
         userIn.setPasswordHash(userIn.getPassword());

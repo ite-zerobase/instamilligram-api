@@ -17,5 +17,5 @@ public interface UserMapper {
     void insertFollow(Follow follow);
     Optional<Follow> selectFollow(Follow follow);
     void deleteFollow(Follow follow);
-    void updateUserProfileImageUrl(String url);
+    void updateUserProfileImageUrl(UserIn user);
 }
