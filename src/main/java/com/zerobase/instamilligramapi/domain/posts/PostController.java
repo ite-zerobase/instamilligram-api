@@ -34,7 +34,7 @@ public class PostController {
 
     @Operation(summary = "여러 게시글 보기 API", description = """
         게시글 다중 조회. <br>
-        세부내역은 게시글 조회 API 참고"""
+        세부내역은 게시글 상세조회 API (/posts/{postId}) 참고"""
     )
     @GetMapping("")
     public ResponseEntity<List<PostOut>> getManyPost(HttpServletRequest request, @Valid @ParameterObject Paging page) {
