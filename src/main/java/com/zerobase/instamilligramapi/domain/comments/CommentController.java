@@ -1,17 +1,12 @@
 package com.zerobase.instamilligramapi.domain.comments;
 
-import com.zerobase.instamilligramapi.domain.comments.dto.CommentIn;
 import com.zerobase.instamilligramapi.domain.comments.dto.CommentOut;
 import com.zerobase.instamilligramapi.global.dto.BaseResponse;
 import com.zerobase.instamilligramapi.global.security.JwtUtil;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

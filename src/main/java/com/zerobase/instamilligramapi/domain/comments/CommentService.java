@@ -7,7 +7,6 @@ import com.zerobase.instamilligramapi.domain.comments.dto.CommentSearch;
 import com.zerobase.instamilligramapi.domain.posts.PostMapper;
 import com.zerobase.instamilligramapi.domain.posts.dto.PostIn;
 import com.zerobase.instamilligramapi.domain.posts.dto.PostMeta;
-import com.zerobase.instamilligramapi.domain.posts.dto.PostOut;
 import com.zerobase.instamilligramapi.domain.users.UserMapper;
 import com.zerobase.instamilligramapi.domain.users.dto.UserSearch;
 import com.zerobase.instamilligramapi.global.exceptions.ErrorCode;

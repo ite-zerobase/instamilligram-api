@@ -1,7 +1,5 @@
 package com.zerobase.instamilligramapi.domain.posts;
 
-import com.zerobase.instamilligramapi.domain.comments.CommentService;
-import com.zerobase.instamilligramapi.domain.comments.dto.CommentOut;
 import com.zerobase.instamilligramapi.domain.posts.dto.*;
 import com.zerobase.instamilligramapi.domain.users.UserMapper;
 import com.zerobase.instamilligramapi.domain.users.dto.UserSearch;
@@ -11,8 +9,6 @@ import com.zerobase.instamilligramapi.global.exceptions.ZbException;
 import com.zerobase.instamilligramapi.global.utils.FileUploader;
 import com.zerobase.instamilligramapi.global.utils.IdGenerator;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
