@@ -32,7 +32,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                     .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
                     .requestMatchers(HttpMethod.POST, "/users").permitAll()
-                    .requestMatchers("/login/**", "/swagger-ui/**", "/v3/**", "/error/**").permitAll()
+                    .requestMatchers("/login/**", "/swagger-ui/**", "/v3/**", "/error/**", "/favicon.ico").permitAll()
                     .anyRequest().authenticated()
             )
             .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

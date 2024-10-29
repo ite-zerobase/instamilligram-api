@@ -32,6 +32,9 @@ public class ErrorResponse {
         this.code = e.getErrorCode().getCode();
         this.remark = e.getRemark();
     }
+    public static ErrorResponse of(ZbException e) {
+        return new ErrorResponse(e);
+    }
     public static ResponseEntity<ErrorResponse> toResponseEntity(ZbException e) {
         return new ResponseEntity<>(
                 new ErrorResponse(e),
