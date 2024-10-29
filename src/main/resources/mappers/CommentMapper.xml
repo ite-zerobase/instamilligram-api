@@ -36,29 +36,59 @@
     </insert>
 
     <select id="selectCommentsByCommentSearch" parameterType="CommentSearch" resultType="CommentOut">
-        SELECT
-            c.comment_id,
-            c.post_id,
-            c.created_by,
-            c.comment_text,
-            c.parent_id,
-            c.like_count,
-            c.reply_count,
-            c.created_at,
-            c.updated_at,
-            COALESCE(l.liked_at IS NOT NULL, false) as liked,
-            l.liked_at
-        FROM comments c
-        LEFT JOIN comment_likes l ON c.comment_id = l.comment_id AND l.username = #{requestingUser}
-        WHERE
-        <if test="commentId != null">
-            parent_id = #{commentId}
-        </if>
-        <if test="postId != null">
-            post_id = #{postId}
-            AND parent_id IS null
-        </if>
-        ORDER BY created_at
+        SELECT * FROM (
+            SELECT
+                c.comment_id,
+                c.post_id,
+                c.created_by,
+                c.comment_text,
+                c.parent_id,
+                c.like_count,
+                c.reply_count,
+                c.created_at,
+                c.updated_at,
+                COALESCE(l.liked_at IS NOT NULL, false) as liked,
+                l.liked_at
+            FROM comments c
+            LEFT JOIN comment_likes l ON c.comment_id = l.comment_id AND l.username = #{requestingUser}
+            WHERE
+                    created_by = #{requestingUser}
+                <if test="commentId != null">
+                    AND parent_id = #{commentId}
+                </if>
+                <if test="postId != null">
+                    AND post_id = #{postId}
+                    AND parent_id IS null
+                </if>
+            ORDER BY created_at DESC
+        )
+        UNION ALL
+        SELECT  * FROM (
+            SELECT
+                c.comment_id,
+                c.post_id,
+                c.created_by,
+                c.comment_text,
+                c.parent_id,
+                c.like_count,
+                c.reply_count,
+                c.created_at,
+                c.updated_at,
+                COALESCE(l.liked_at IS NOT NULL, false) as liked,
+                l.liked_at
+            FROM comments c
+            LEFT JOIN comment_likes l ON c.comment_id = l.comment_id AND l.username = #{requestingUser}
+            WHERE
+                    created_by != #{requestingUser}
+                <if test="commentId != null">
+                    AND parent_id = #{commentId}
+                </if>
+                <if test="postId != null">
+                    AND post_id = #{postId}
+                    AND parent_id IS null
+                </if>
+            ORDER BY created_at DESC
+        )
     </select>
 
     <insert id="insertCommentLike" parameterType="CommentMeta">

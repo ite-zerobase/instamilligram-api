@@ -22,8 +22,11 @@ public class UserOut extends AuditDto {
     @JsonIgnore
     private String passwordHash;
     private String profilePictureUrl;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String nickname;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String job;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String bio;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer postCount;

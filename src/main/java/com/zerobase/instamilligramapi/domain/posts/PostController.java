@@ -10,7 +10,6 @@ import com.zerobase.instamilligramapi.global.dto.BaseResponse;
 import com.zerobase.instamilligramapi.global.dto.Paging;
 import com.zerobase.instamilligramapi.global.security.JwtUtil;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -98,6 +97,8 @@ public class PostController {
 
     @Operation(summary = "전체 댓글 조회 API", description = """
             게시글의 댓글을 전체 조회 <br>
+            - 본인의(로그인 되어있는 사용자) 댓글이 가장 최상단에 위치하도록 조회됨
+            <br>
             <pre>
                 [
                   {
