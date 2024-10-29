@@ -15,7 +15,7 @@ public enum ErrorCode {
     /* 401 */
     TOKEN_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다.", "C4011"),
     TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "만료된 토큰입니다.", "C4012"),
-    TOKEN_NULL(HttpStatus.UNAUTHORIZED, "토큰이 없습니다..", "C4013"),
+    TOKEN_NULL(HttpStatus.UNAUTHORIZED, "토큰이 없습니다.", "C4013"),
     WRONG_USERNAME_OR_PASSWORD(HttpStatus.UNAUTHORIZED, "잘못된 사용자명 또는 비밀번호입니다.", "L4011"),
 
     /* 404 */

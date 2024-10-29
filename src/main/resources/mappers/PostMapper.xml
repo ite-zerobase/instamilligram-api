@@ -89,7 +89,7 @@
             m.media_type
         FROM SelectedPosts p
         LEFT JOIN post_media m ON p.post_id = m.post_id
-        ORDER BY p.created_at
+        ORDER BY p.created_at DESC
     </select>
 
     <resultMap id="PostOutMap" type="PostOut">

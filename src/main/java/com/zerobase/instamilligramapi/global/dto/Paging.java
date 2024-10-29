@@ -21,8 +21,10 @@ public class Paging {
     private int page = 1;
     @Schema(description = "조회 사이즈")
     @NotNull(message = "조회 사이즈는 필수값입니다.")
-    @Size(min = 1, max = 20, message = "한 번에 조회 가능한 게시글 수는 최소 1개에서 최대 20개 입니다. (기본값 10)")
+    @Min(value = 1, message = "한 번에 조회 가능한 게시글 수는 최소 1개에서 최대 20개 입니다. (기본값 10)")
+    @Max(value = 20, message = "한 번에 조회 가능한 게시글 수는 최소 1개에서 최대 20개 입니다. (기본값 10)")
     private int size = 10;
     @JsonIgnore
     private String requestingUser;
 }
+
