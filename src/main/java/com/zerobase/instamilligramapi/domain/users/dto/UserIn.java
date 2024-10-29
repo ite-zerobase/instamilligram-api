@@ -17,7 +17,7 @@ public class UserIn {
     @JsonIgnore
     private Integer userId;
     @NotBlank(message = "사용자 이름을 입력해 주세요.")
-    @Schema(description = "사용자 이름", example = "afsf")
+    @Schema(description = "사용자 이름")
     private String username;
     @NotBlank(message = "비밀번호를 입력해 주세요.")
     @Schema(description = "비밀번호")
@@ -29,6 +29,10 @@ public class UserIn {
     private String email;
     @JsonIgnore
     private String profilePictureUrl;
+    @Schema(description = "직업")
+    private String job;
+    @Schema(description = "닉네임")
+    private String nickname;
     @Schema(description = "소개글")
     private String bio;
     @Schema(description = "프로필 이미지", type = "string", format = "binary")
