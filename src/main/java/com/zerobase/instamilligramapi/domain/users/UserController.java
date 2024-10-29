@@ -20,7 +20,21 @@ public class UserController {
     private final UserService userService;
     private final JwtUtil jwtUtil;
 
-    @Operation(summary = "사용자 조회 API", description = "사용자 정보 조회")
+    @Operation(summary = "사용자 조회 API", description = """
+            사용자 정보 조회 <br>
+            <pre>
+                {
+                  "createdAt": 사용자 생성일자
+                  "updatedAt": 사용자 수정일자
+                  "userId": 사용자 ID
+                  "username": 사용자명
+                  "following": 해당 사용자 팔로잉 여부
+                  "email": 사용자 이메일
+                  "profilePictureUrl": 사용자 프로필 이미지
+                  "bio": 사용자 소개글
+                }
+            </pre>
+            """)
     @GetMapping("/{username}")
     public ResponseEntity<?> getUserByUsername(HttpServletRequest request, @PathVariable String username) {
         String requester = jwtUtil.extractUsernameFromRequest(request);
