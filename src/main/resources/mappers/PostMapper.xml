@@ -79,7 +79,7 @@
             FROM posts p
             JOIN users u ON p.created_by = u.username
             LEFT JOIN post_likes l ON p.post_id = l.post_id and l.username = #{requestingUser}
-            ORDER BY p.created_at
+            ORDER BY p.created_at DESC
             OFFSET (#{page}-1)*#{size} FETCH FIRST #{size} ROWS only
         )
         SELECT
@@ -89,7 +89,6 @@
             m.media_type
         FROM SelectedPosts p
         LEFT JOIN post_media m ON p.post_id = m.post_id
-        ORDER BY p.created_at DESC
     </select>
 
     <resultMap id="PostOutMap" type="PostOut">
