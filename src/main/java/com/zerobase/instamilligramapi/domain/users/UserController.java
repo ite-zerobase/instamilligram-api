@@ -20,7 +20,7 @@ public class UserController {
     private final UserService userService;
     private final JwtUtil jwtUtil;
 
-    @Operation(summary = "유저 조회 API", description = "사용자 정보 조회")
+    @Operation(summary = "사용자 조회 API", description = "사용자 정보 조회")
     @GetMapping("/{username}")
     public ResponseEntity<?> getUserByUsername(HttpServletRequest request, @PathVariable String username) {
         String requester = jwtUtil.extractUsernameFromRequest(request);
@@ -28,21 +28,21 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @Operation(summary = "유저 생성 API", description = "신규 유저 생성")
+    @Operation(summary = "신규 가입", description = "신규 사용자 생성")
     @PostMapping(value="", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<UserOut> createUser(@ModelAttribute @Valid UserIn user) {
         UserOut userOut = userService.createUser(user);
         return ResponseEntity.ok(userOut);
     }
 
-//    @Operation(summary = "유저 프로필 업로드 API", description = "유저 프로필 추가")
+//    @Operation(summary = "사용자 프로필 업로드 API", description = "사용자 프로필 추가")
 //    @PostMapping(value="/{username}/profile-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 //    public ResponseEntity<ImageOut> uploadUserProfile(@PathVariable String username, @RequestParam MultipartFile image) {
 //        ImageOut result = userService.uploadUserProfile(username, image);
 //        return ResponseEntity.ok(result);
 //    }
 
-    @Operation(summary = "팔로우 생성 API", description = """
+    @Operation(summary = "사용자 팔로우", description = """
             현재 로그인 한 사용자가 대상 사용자를 팔로우. <br>
             예시) <br>
             현재 사용자인 user1이 /user2/follow 로 요청 시 user1 -> user2 팔로우 관계 생성
@@ -54,7 +54,7 @@ public class UserController {
         return ResponseEntity.ok(result);
     }
 
-    @Operation(summary = "팔로우 삭제 API", description = """
+    @Operation(summary = "사용자 언팔로우", description = """
             현재 로그인 한 사용자가 대상 사용자를 언팔로우. <br>
             예시) <br>
             현재 사용자인 user1이 /user2/follow 로 요청 시 user1 -> user2 팔로우 관계 삭제

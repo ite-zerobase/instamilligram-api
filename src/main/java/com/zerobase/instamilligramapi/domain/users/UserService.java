@@ -42,10 +42,11 @@ public class UserService {
         userSearch.setRequestingUser(requestingUser);
         return this.selectUserByUserSearch(userSearch);
     }
+
     public UserOut selectUserByAuth(AuthIn auth) {
         auth.setPasswordHash(auth.getPassword());
         return userMapper.selectUserByAuth(auth)
-                .orElseThrow(ZbException.supplier(ErrorCode.USER_NOT_FOUND));
+                .orElseThrow(ZbException.supplier(ErrorCode.WRONG_USERNAME_OR_PASSWORD));
     }
 
     public UserOut createUser(UserIn userIn) {
