@@ -16,6 +16,7 @@ public enum ErrorCode {
     TOKEN_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다.", "C4011"),
     TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "만료된 토큰입니다.", "C4012"),
     TOKEN_NULL(HttpStatus.UNAUTHORIZED, "토큰이 없습니다..", "C4013"),
+    WRONG_USERNAME_OR_PASSWORD(HttpStatus.UNAUTHORIZED, "잘못된 사용자명 또는 비밀번호입니다.", "L4011"),
 
     /* 404 */
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 게시글이 없습니다.", "P4041"),
@@ -26,9 +27,7 @@ public enum ErrorCode {
 
     COMMENT_NOT_FOUND(HttpStatus.CONFLICT, "해당 댓글이 없습니다.", "C4041"),
     TARGET_COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "대상 댓글이 없습니다.", "C4042"),
-
-    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 유저입니다.", "U4041"),
-
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 사용자입니다.", "U4041"),
     FOLLOW_NOT_FOUND(HttpStatus.NOT_FOUND, "팔로우중이 아닙니다.", "F4041"),
 
     /* 409 */
