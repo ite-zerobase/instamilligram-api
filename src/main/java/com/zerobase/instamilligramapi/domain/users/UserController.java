@@ -31,9 +31,12 @@ public class UserController {
                   "following": 해당 사용자 팔로잉 여부
                   "email": 사용자 이메일
                   "profilePictureUrl": 사용자 프로필 이미지
-                  "nickname": "사용자 닉네임",
-                  "job": "사용자 직업",
+                  "nickname": "사용자 닉네임"
+                  "job": "사용자 직업"
                   "bio": 사용자 소개글
+                  "postCount": 게시글 수
+                  "followerCount": 팔로워 수
+                  "followingCount": 팔로잉 수
                 }
             </pre>
             """)
