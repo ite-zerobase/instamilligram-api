@@ -16,6 +16,7 @@ public class CommentOut extends AuditDto {
     private Integer postId;
     @Schema(description = "댓글 작성자 username", example = "danielchoi1115")
     private String createdBy;
+    private String creatorProfileUrl;
     @Schema(description = "댓글 내용", example = "댓글입니다.")
     private String commentText;
     private Integer parentId;

@@ -30,6 +30,7 @@ public class CommentController {
                         "commentId": 댓글 ID
                         "postId": 게시글 ID
                         "createdBy": 댓글 작성자
+                        "profilePictureUrl": 댓글 작성자 프로필 URL
                         "commentText": 댓글 내용
                         "parentId": 상위 댓글 ID (댓글은 null, 답글은 상위 댓글의 ID)
                         "likeCount": 댓글 좋아요 수
