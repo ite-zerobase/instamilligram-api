@@ -33,8 +33,7 @@ public class FileUploader {
             return sendFileToServer(file, filename);
         }
         catch (Exception e) {
-            e.printStackTrace();
-            throw ZbException.from(ErrorCode.FAILED_TO_UPLOAD);
+            throw ZbException.from(ErrorCode.FAILED_TO_UPLOAD, e.getMessage());
         }
     }
 
