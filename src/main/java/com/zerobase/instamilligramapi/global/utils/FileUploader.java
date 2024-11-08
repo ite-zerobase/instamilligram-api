@@ -20,10 +20,10 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class FileUploader {
-    @Value("${upload.server.url}")
+    @Value("${fileserver.upload.url}")
     private String fileServerUrl;
 
-    @Value("${fileserver.token}")
+    @Value("${fileserver.upload.token}")
     private String fileServerToken;
 
     private final RestTemplate restTemplate;
