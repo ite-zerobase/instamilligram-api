@@ -21,7 +21,6 @@ public class CorsConfig {
         config.addAllowedMethod("PUT");
         config.addAllowedMethod("PATCH");
         config.addAllowedMethod("OPTIONS");
-        config.addAllowedOrigin("*");
         config.addAllowedHeader("*");
         config.addExposedHeader("Authorization");
         source.registerCorsConfiguration("/**", config);
