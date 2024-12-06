@@ -1,4 +1,6 @@
 spring:
+  server:
+    url: https://zerobaseapi.winten.im
   application:
     name: instamilligram-api
   profiles:
@@ -11,9 +13,6 @@ spring:
     username: ${db-username}
     password: ${db-password}
     driver-class-name: org.postgresql.Driver
-  webflux:
-    cors:
-      allowed-origins: "*"
 mybatis:
   type-aliases-package: com.zerobase
   mapper-locations: classpath:mappers/*.xml
