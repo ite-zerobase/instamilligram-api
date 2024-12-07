@@ -6,7 +6,7 @@
 - 댓글: 댓글의 답글 조회, 댓글 좋아요, 댓글 좋아요 취소
 
 # 1. Swagger로 API 간편하게 테스트하기
-<img src="https://github.com/user-attachments/assets/847dd1b3-cac3-4efc-a79a-576c8f3d5036" width="600">
+<img src="https://github.com/user-attachments/assets/847dd1b3-cac3-4efc-a79a-576c8f3d5036" width="800">
 
 ### Swagger 링크
 https://zerobaseapi.winten.im/swagger-ui/index.html#/
@@ -35,7 +35,10 @@ https://cdn.winten.im/docs
 
 ### 조회방법 예시
 ```html
-<!-- "http://cdn.winten.im/api/zerobase/file/**{이미지명}" -->**
+<!-- "https://cdn.winten.im/api/zerobase/file/**{이미지명}" -->**
 
-<img src="http://cdn.winten.im/api/zerobase/file/p_1_0_taH6Xe4H.jpg" />
+<img src="https://cdn.winten.im/api/zerobase/file/p_1_0_taH6Xe4H.jpg" />
 ```
+
+# 3. 아키텍처가 궁금한 분들을 위해
+<img src="https://github.com/user-attachments/assets/7ba05915-1e17-4aea-80e8-fb31f03737f3" width="800" />
