@@ -13,7 +13,9 @@ public class CorsConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.addAllowedOrigin("http://localhost:3000");
+        config.addAllowedOrigin("http://localhost:8080");
         config.addAllowedOrigin("http://127.0.0.1:3000");
+        config.addAllowedOrigin("http://127.0.0.1:8080");
         config.addAllowedOrigin("https://zerobaseapi.winten.im");
         config.addAllowedOrigin("https://zerobaseapi.winten.im:443");
         config.addAllowedMethod("GET");

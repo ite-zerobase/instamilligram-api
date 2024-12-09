@@ -19,6 +19,9 @@ public class SwaggerConfig {
     @Value("${spring.server.url}")
     private String serverUrl;
 
+    @Value("${server.port}")
+    private String serverPort;
+
     @Bean
     public OpenAPI openAPI() {
         return new OpenAPI()
@@ -30,7 +33,10 @@ public class SwaggerConfig {
                         .license(new License().name("License of API")
                                 .url("API license URL"))
                 )
-                .servers(List.of(new Server().url(serverUrl).description("Zerobase Instamilligram HTTPS API 서버")));
+                .servers(List.of(
+                        new Server().url(serverUrl).description("Zerobase Instamilligram HTTPS API 서버"),
+                        new Server().url("http://localhost:"+serverPort).description("Zerobase Instamilligram Localhost API 서버")
+                ));
     }
 
     private Info apiInfo() {
